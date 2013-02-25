@@ -49,10 +49,10 @@ public class NewBehaviourScript : MonoBehaviour {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			//Vector3 dirOfClick=(ray.GetPoint.transform.position);
 			
-			int xLocation=(int)(playerChar.transform.position.x-ray.GetPoint(0).x);
-			int yLocation=(int)(playerChar.transform.position.y-ray.GetPoint (0).y);
-			Vector3 targetVelocity=new Vector3(-0.5f*(xLocation - playerChar.transform.position.x) , -0.5f*(yLocation - playerChar.transform.position.y), 0f);
-			
+			float xLocation=playerChar.transform.position.x-ray.GetPoint(0).x;
+			float yLocation=playerChar.transform.position.y-ray.GetPoint (0).y;
+			Vector3 targetVelocity=new Vector3(-0.5f*(xLocation/* - playerChar.transform.position.x*/) , -0.5f*(yLocation/* - playerChar.transform.position.y*/), 0f);
+			Debug.Log(xLocation + " " + yLocation);
 			rigidbody.AddForce (targetVelocity,ForceMode.VelocityChange);
 			//playerChar.transform.Translate (-xLocation, -yLocation, 0 );
 		}
