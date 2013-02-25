@@ -44,15 +44,17 @@ public class NewBehaviourScript : MonoBehaviour {
 		{
 		rightArrow=false;		
 		}
-	float z1=0;
+	//float z1=0;
 		if (Input.GetButtonDown("Fire1")) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			//Vector3 dirOfClick=(ray.GetPoint.transform.position);
 			
 			int xLocation=(int)(playerChar.transform.position.x-ray.GetPoint(0).x);
 			int yLocation=(int)(playerChar.transform.position.y-ray.GetPoint (0).y);
-		
-			playerChar.transform.Translate (-xLocation, -yLocation, 0 );
+			Vector3 targetVelocity=new Vector3(-0.5f*(xLocation - playerChar.transform.position.x) , -0.5f*(yLocation - playerChar.transform.position.y), 0f);
+			
+			rigidbody.AddForce (targetVelocity,ForceMode.VelocityChange);
+			//playerChar.transform.Translate (-xLocation, -yLocation, 0 );
 		}
 	}
 	void FindPlayerChar()
