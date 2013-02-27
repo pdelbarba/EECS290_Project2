@@ -6,22 +6,29 @@ public class NewBehaviourScript : MonoBehaviour {
 	GameObject playerChar;
 	public Vector3 jumpVelocity;
 	public float jumpStrength=-.5f;
+	public int maxJumps=4;
+	int currentJumps =10;
+	GameObject jBox;
+	numJumps nj;
+	int minValueForRecharge=1;
 	//bool leftArrow=false;
 	//bool rightArrow=false;
-	bool onPlatform;
 	// Use this for initialization
 	void Start () {
 	FindPlayerChar();
+	jBox=GameObject.Find("NumberOfJumps");
+	nj=(numJumps)jBox.GetComponent("numJumps");
+	nj.UpdateNumJumps(currentJumps);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	FindPlayerChar();
-		if(onPlatform && Input.GetButtonDown("Jump"))
-		{
-		rigidbody.AddForce (jumpVelocity,ForceMode.VelocityChange);	
-		onPlatform=false;
-		}
+	
+	//		if(Input.GetButtonDown("Jump"))
+	//		{
+	//		rigidbody.AddForce (jumpVelocity,ForceMode.VelocityChange);	
+	//		}
 	//Decided that only way to move the main character is through the use of the right click to aim jump mechanic	
 	//if (leftArrow==true || Input.GetKeyDown(KeyCode.LeftArrow))
 	//	{
@@ -47,17 +54,31 @@ public class NewBehaviourScript : MonoBehaviour {
 	//	rightArrow=false;		
 	//	}
 	//float z1=0;
-		if (Input.GetButtonDown("Fire1")) {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			//Vector3 dirOfClick=(ray.GetPoint.transform.position);
+		if (currentJumps>0)
+		{
 			
-			float xLocation=playerChar.transform.position.x-ray.GetPoint(0).x;
-			float yLocation=playerChar.transform.position.y-ray.GetPoint (0).y;
-			Vector3 targetVelocity=new Vector3(jumpStrength*(xLocation/* - playerChar.transform.position.x*/) , jumpStrength*(yLocation/* - playerChar.transform.position.y*/), 0f);
-			Debug.Log(xLocation + " " + yLocation);
-			rigidbody.AddForce (targetVelocity,ForceMode.VelocityChange);
-			//playerChar.transform.Translate (-xLocation, -yLocation, 0 );
+			if (Input.GetButtonDown("Fire1")) {
+	            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+				//Vector3 dirOfClick=(ray.GetPoint.transform.position);
+				
+				float xLocation=playerChar.transform.position.x-ray.GetPoint(0).x;
+				float yLocation=playerChar.transform.position.y-ray.GetPoint (0).y;
+				Vector3 targetVelocity=new Vector3(jumpStrength*(xLocation/* - playerChar.transform.position.x*/) , jumpStrength*(yLocation/* - playerChar.transform.position.y*/), 0f);
+				//Debug.Log(xLocation + " " + yLocation);
+				rigidbody.AddForce (targetVelocity,ForceMode.VelocityChange);
+				
+				currentJumps=currentJumps-1;
+				nj.UpdateNumJumps(currentJumps);
+				//playerChar.transform.Translate (-xLocation, -yLocation, 0 );
+			}
 		}
+			var vel = rigidbody.velocity;
+			float speed=vel.magnitude;
+			if (speed < minValueForRecharge && currentJumps < maxJumps)
+			{
+			currentJumps++;	
+			nj.UpdateNumJumps(currentJumps);
+			}
 	}
 	void FindPlayerChar()
 	{
