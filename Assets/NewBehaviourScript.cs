@@ -79,6 +79,12 @@ public class NewBehaviourScript : MonoBehaviour {
 			currentJumps++;	
 			nj.UpdateNumJumps(currentJumps);
 			}
+		if(playerChar.transform.position.y > 90) {//create invisible barrier at the top of the map
+			rigidbody.AddForce(new Vector3(0.0f, -100.0f, 0.0f));
+		}
+		if(playerChar.transform.position.y < -25) {//return player if they fall in the pit
+			playerChar.transform.position  = new Vector3(-46.0f, 8.0f, 0.0f);
+		}
 	}
 	void FindPlayerChar()
 	{
